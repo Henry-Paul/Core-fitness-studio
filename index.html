@@ -1,563 +1,102 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Core Fitness Studio</title>
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-
-    <!-- Custom Tailwind Configuration and Styles -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        zinc: {
-                            950: '#09090b',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #09090b;
-            color: #fafafa;
+            background-color: #09090b; /* zinc-950 */
+            color: #fafafa; /* zinc-50 */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
+
         ::selection {
             background-color: #eab308; /* yellow-500 */
-            color: #09090b;
+            color: #09090b; /* zinc-900 */
         }
+
+        /* Animation class */
         .fade-in {
             animation: fadeIn 0.5s ease-in-out;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
-
+<body>
     <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 
-                <!-- Logo -->
-                <div class="flex items-center gap-2 cursor-pointer group" onclick="navigateTo('home')">
-                    <div class="w-10 h-10 bg-yellow-500 flex items-center justify-center rounded-sm group-hover:bg-yellow-400 transition-colors">
-                        <i data-lucide="target" class="w-7 h-7 text-zinc-950"></i>
-                    </div>
-                    <div class="flex flex-col leading-none">
-                        <span class="text-xl font-black tracking-widest text-white">CORE</span>
-                        <span class="text-[0.65rem] font-medium tracking-[0.2em] text-yellow-500">FITNESS STUDIO</span>
-                    </div>
+                <!-- Brand Logo Placeholder -->
+                <div class="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" onclick="navigateTo('home')">
+                    <!-- Developer Note: Replace YOUR_LOGO_IMAGE_URL.jpg with your actual logo path -->
+                    <img 
+                        src="YOUR_LOGO_IMAGE_URL.jpg" 
+                        alt="Core Fitness Studio Logo" 
+                        class="h-14 w-auto object-contain rounded-sm"
+                        onerror="this.onerror=null; this.src='https://placehold.co/200x60/18181b/eab308?text=Upload+Logo';"
+                    >
                 </div>
 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-8 items-center">
-                    <button id="nav-home" onclick="navigateTo('home')" class="nav-link text-yellow-500 text-sm font-semibold tracking-wide uppercase transition-colors hover:text-white">Home</button>
-                    <button id="nav-about" onclick="navigateTo('about')" class="nav-link text-zinc-400 text-sm font-semibold tracking-wide uppercase transition-colors hover:text-white">About</button>
-                    <button id="nav-packages" onclick="navigateTo('packages')" class="nav-link text-zinc-400 text-sm font-semibold tracking-wide uppercase transition-colors hover:text-white">Packages</button>
-                    <button id="nav-projects" onclick="navigateTo('projects')" class="nav-link text-zinc-400 text-sm font-semibold tracking-wide uppercase transition-colors hover:text-white">Projects</button>
-                    <button class="bg-yellow-500 text-zinc-950 px-5 py-2 text-sm font-bold uppercase tracking-wide hover:bg-yellow-400 transition-colors rounded-sm">
-                        Join Now
-                    </button>
+                <div class="hidden md:flex space-x-8 items-center" id="desktop-menu">
+                    <!-- Links injected by JS -->
                 </div>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button onclick="toggleMobileMenu()" class="text-zinc-400 hover:text-white focus:outline-none">
-                        <i id="menu-icon" data-lucide="menu" class="w-6 h-6"></i>
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-zinc-400 hover:text-white">
+                        <i data-lucide="menu" class="w-6 h-6" id="menu-icon"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
+        <!-- Mobile Menu (Hidden by default) -->
         <div id="mobile-menu" class="hidden md:hidden bg-zinc-900 border-b border-zinc-800 absolute w-full">
-            <div class="px-4 pt-2 pb-6 space-y-2">
-                <button onclick="navigateTo('home')" class="block w-full text-left px-3 py-4 text-base font-bold tracking-wider uppercase border-b border-zinc-800/50 text-white">Home</button>
-                <button onclick="navigateTo('about')" class="block w-full text-left px-3 py-4 text-base font-bold tracking-wider uppercase border-b border-zinc-800/50 text-zinc-400">About</button>
-                <button onclick="navigateTo('packages')" class="block w-full text-left px-3 py-4 text-base font-bold tracking-wider uppercase border-b border-zinc-800/50 text-zinc-400">Packages</button>
-                <button onclick="navigateTo('projects')" class="block w-full text-left px-3 py-4 text-base font-bold tracking-wider uppercase border-b border-zinc-800/50 text-zinc-400">Projects</button>
+            <div class="px-4 pt-2 pb-6 space-y-2" id="mobile-menu-links">
+                <!-- Links injected by JS -->
             </div>
         </div>
     </nav>
 
     <!-- Main Content Area -->
-    <main class="flex-grow">
-
-        <!-- ================= HOME PAGE ================= -->
-        <section id="page-home" class="page-section fade-in">
-            <!-- Hero Section -->
-            <div class="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-                <div class="absolute inset-0 z-0">
-                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop" alt="Gym Background" class="w-full h-full object-cover opacity-30">
-                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
-                </div>
-                
-                <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-yellow-500/30 text-yellow-500 text-xs font-bold uppercase tracking-widest mb-6">
-                        <i data-lucide="activity" class="w-3 h-3"></i> Elevating Fitness Excellence
-                    </div>
-                    <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tight mb-6">
-                        Unleash Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Core</span> Potential
-                    </h1>
-                    <p class="text-lg md:text-xl text-zinc-300 mb-10 max-w-2xl mx-auto font-light">
-                        Providing state-of-the-art fitness services with a 5+ year legacy. 
-                        Experience upscale wellness tailored for elite communities.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button onclick="navigateTo('packages')" class="bg-yellow-500 text-zinc-950 px-8 py-4 font-black uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded-sm flex items-center justify-center gap-2">
-                            View Packages <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                        </button>
-                        <button onclick="navigateTo('about')" class="bg-zinc-800 text-white px-8 py-4 font-bold uppercase tracking-widest hover:bg-zinc-700 transition-colors border border-zinc-700 rounded-sm">
-                            Our Story
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Section -->
-            <div class="bg-yellow-500 text-zinc-950 py-12 border-y-4 border-yellow-600 relative z-20 -mt-10 mx-4 md:mx-auto max-w-6xl rounded-sm shadow-2xl">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 px-8 text-center">
-                    <div>
-                        <div class="text-4xl md:text-5xl font-black mb-1">4800+</div>
-                        <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Success Stories</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl md:text-5xl font-black mb-1 flex items-center justify-center gap-1">
-                            4.6 <i data-lucide="star" class="w-6 h-6 fill-zinc-950"></i>
-                        </div>
-                        <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Google Rating</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl md:text-5xl font-black mb-1">600+</div>
-                        <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Monthly Registrations</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl md:text-5xl font-black mb-1">26</div>
-                        <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Elite Trainers</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feature Highlight -->
-            <div class="max-w-7xl mx-auto px-4 py-24">
-                <div class="grid md:grid-cols-2 gap-16 items-center">
-                    <div>
-                        <h2 class="text-3xl md:text-4xl font-black uppercase mb-6 border-l-4 border-yellow-500 pl-4">Exclusive Corporate <br>& Society Fitness</h2>
-                        <p class="text-zinc-400 mb-6 text-lg leading-relaxed">
-                            We specialize in collaborating with premium builders like <strong class="text-white">PRAERA BUILDCON</strong> and <strong class="text-white">MY HOME</strong> to provide fully managed, state-of-the-art gymnasiums inside residential societies.
-                        </p>
-                        <ul class="space-y-4 mb-8 text-zinc-300">
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="check-circle-2" class="w-6 h-6 text-yellow-500 shrink-0"></i>
-                                <span>100% Asset Maintenance & Management by CFS</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="check-circle-2" class="w-6 h-6 text-yellow-500 shrink-0"></i>
-                                <span>Certified Elite Trainers Available 12 Hours/Day</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="check-circle-2" class="w-6 h-6 text-yellow-500 shrink-0"></i>
-                                <span>Bespoke Graphics & High-Impact Lighting Installation</span>
-                            </li>
-                        </ul>
-                        <button onclick="navigateTo('projects')" class="text-yellow-500 font-bold uppercase tracking-wide hover:text-yellow-400 flex items-center gap-2">
-                            See Our Projects <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-yellow-500 rounded-sm transform translate-x-4 translate-y-4 opacity-20"></div>
-                        <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2070&auto=format&fit=crop" alt="Gym Interior" class="relative z-10 w-full rounded-sm object-cover border border-zinc-800">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= ABOUT PAGE ================= -->
-        <section id="page-about" class="page-section hidden pb-20">
-            <!-- Header -->
-            <div class="bg-zinc-900 py-20 border-b border-zinc-800 relative overflow-hidden">
-                <div class="absolute right-0 top-0 opacity-5">
-                    <i data-lucide="target" class="w-96 h-96 -mt-20 -mr-20"></i>
-                </div>
-                <div class="max-w-7xl mx-auto px-4 relative z-10">
-                    <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">About <span class="text-yellow-500">CFS</span></h1>
-                    <p class="text-xl text-zinc-400 max-w-2xl">A legacy of fitness excellence driven by passion, science, and community well-being.</p>
-                </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 py-16">
-                <div class="grid md:grid-cols-12 gap-12">
-                    <!-- Main Content -->
-                    <div class="md:col-span-8 space-y-12">
-                        <section>
-                            <h2 class="text-2xl font-black uppercase mb-4 flex items-center gap-3">
-                                <i data-lucide="target" class="text-yellow-500 w-8 h-8"></i> Our Vision
-                            </h2>
-                            <div class="bg-zinc-900 p-8 rounded-sm border-l-4 border-yellow-500 shadow-xl">
-                                <p class="text-lg text-zinc-300 leading-relaxed italic">
-                                    "To collaborate with elite communities in providing state-of-the-art fitness services catering to residents. Our center provides an exclusive fitness experience that aligns with the upscale character of the society while delivering strong resident well-being."
-                                </p>
-                            </div>
-                        </section>
-
-                        <section>
-                            <h2 class="text-2xl font-black uppercase mb-4 flex items-center gap-3">
-                                <i data-lucide="dumbbell" class="text-yellow-500 w-8 h-8"></i> Who We Are
-                            </h2>
-                            <div class="space-y-4 text-zinc-400 leading-relaxed">
-                                <p>
-                                    Core Fitness Studio is a Trademark and GST registered gym head-quartered in Nallagandla and has been operational for over 5 years. We don't just provide service and maintenance; we deliver a legacy.
-                                </p>
-                                <p>
-                                    The owner, a <strong class="text-white">Certified Nutrition Coach</strong>, has been in the fitness industry for over 20 years and possesses a deep, scientific understanding of the human body and transformational mechanics.
-                                </p>
-                                <p>
-                                    Our team at CFS comes with an overall collective experience of over <strong class="text-white">30 years</strong>. Our multiple trainers continue to actively participate and win prestigious competitions at various levels. We are passionate about what we do, and that is what makes us stand tall amongst mortals.
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-
-                    <!-- Sidebar / Stats -->
-                    <div class="md:col-span-4 space-y-6">
-                        <div class="bg-zinc-900 p-6 border border-zinc-800 rounded-sm">
-                            <h3 class="font-bold uppercase text-yellow-500 mb-4 tracking-widest text-sm">Leadership Expertise</h3>
-                            <ul class="space-y-4">
-                                <li class="flex gap-3">
-                                    <div class="mt-1"><i data-lucide="users" class="w-5 h-5 text-zinc-400"></i></div>
-                                    <div>
-                                        <strong class="block text-white">20+ Years Industry Experience</strong>
-                                        <span class="text-sm text-zinc-500">Led by a Certified Nutrition Coach</span>
-                                    </div>
-                                </li>
-                                <li class="flex gap-3">
-                                    <div class="mt-1"><i data-lucide="trophy" class="w-5 h-5 text-zinc-400"></i></div>
-                                    <div>
-                                        <strong class="block text-white">Competition Winning Staff</strong>
-                                        <span class="text-sm text-zinc-500">Trainers active in professional circuits</span>
-                                    </div>
-                                </li>
-                                <li class="flex gap-3">
-                                    <div class="mt-1"><i data-lucide="calendar-days" class="w-5 h-5 text-zinc-400"></i></div>
-                                    <div>
-                                        <strong class="block text-white">5+ Years Operational</strong>
-                                        <span class="text-sm text-zinc-500">Established brand in Nallagandla</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-yellow-500 text-zinc-950 p-6 rounded-sm">
-                            <h3 class="font-black uppercase mb-2 text-lg">Why Choose Us?</h3>
-                            <p class="text-sm font-medium mb-4">Numbers that speak for our dedication.</p>
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center border-b border-zinc-950/20 pb-2">
-                                    <span class="font-bold">Google Rating</span>
-                                    <span class="font-black text-xl flex items-center">4.6<i data-lucide="star" class="w-4 h-4 ml-1 fill-zinc-950"></i></span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-zinc-950/20 pb-2">
-                                    <span class="font-bold">Active Centres</span>
-                                    <span class="font-black text-xl">4</span>
-                                </div>
-                                <div class="flex justify-between items-center border-b border-zinc-950/20 pb-2">
-                                    <span class="font-bold">Elite Trainers</span>
-                                    <span class="font-black text-xl">26</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="font-bold">PT Days/Week</span>
-                                    <span class="font-black text-xl">5</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PACKAGES PAGE ================= -->
-        <section id="page-packages" class="page-section hidden pb-20">
-            <!-- Header -->
-            <div class="bg-zinc-900 py-16 border-b border-zinc-800 text-center">
-                <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">Membership <span class="text-yellow-500">Tariffs</span></h1>
-                <p class="text-zinc-400 max-w-2xl mx-auto px-4">Choose the plan that fits your goals. All prices shown are inclusive of GST.</p>
-            </div>
-
-            <div class="max-w-5xl mx-auto px-4 py-12">
-                <!-- Toggle -->
-                <div class="flex justify-center mb-12">
-                    <div class="bg-zinc-900 p-1 rounded-sm inline-flex border border-zinc-800">
-                        <button id="tab-btn-residents" onclick="switchPackageTab('residents')" class="px-8 py-3 text-sm font-bold uppercase tracking-wider rounded-sm transition-all bg-yellow-500 text-zinc-950 shadow-lg">
-                            Residents
-                        </button>
-                        <button id="tab-btn-nonResidents" onclick="switchPackageTab('nonResidents')" class="px-8 py-3 text-sm font-bold uppercase tracking-wider rounded-sm transition-all text-zinc-400 hover:text-white">
-                            Non-Residents
-                        </button>
-                    </div>
-                </div>
-
-                <!-- RESIDENTS TAB CONTENT -->
-                <div id="tab-content-residents" class="space-y-16 fade-in">
-                    <!-- General Membership Table -->
-                    <div>
-                        <div class="flex items-center gap-3 mb-6 border-b border-zinc-800 pb-4">
-                            <i data-lucide="users" class="w-8 h-8 text-yellow-500"></i>
-                            <h2 class="text-2xl font-black uppercase">General Membership</h2>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-zinc-900 text-zinc-300 text-sm uppercase tracking-wider">
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Duration</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Individual (₹)</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Couple (₹)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-zinc-800">
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Monthly</td><td class="p-4 text-zinc-300">1,260</td><td class="p-4 text-zinc-300">2,100</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Quarterly</td><td class="p-4 text-zinc-300">3,255</td><td class="p-4 text-zinc-300">5,250</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Half Yearly</td><td class="p-4 text-zinc-300">5,250</td><td class="p-4 text-zinc-300">8,400</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Annual</td><td class="p-4 text-zinc-300">8,400</td><td class="p-4 text-zinc-300">13,650</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Personal Training Table -->
-                    <div>
-                        <div class="flex items-center gap-3 mb-6 border-b border-zinc-800 pb-4">
-                            <i data-lucide="target" class="w-8 h-8 text-yellow-500"></i>
-                            <h2 class="text-2xl font-black uppercase">Personal Training (Individual)</h2>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-zinc-900 text-zinc-300 text-sm uppercase tracking-wider">
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Duration</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold text-yellow-500">PT Only (₹)</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold">PT + Gym Membership (₹)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-zinc-800">
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Monthly</td><td class="p-4 text-yellow-500 font-medium">6,300</td><td class="p-4 text-zinc-300">7,560</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Quarterly</td><td class="p-4 text-yellow-500 font-medium">15,750</td><td class="p-4 text-zinc-300">19,005</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Half Yearly</td><td class="p-4 text-yellow-500 font-medium">26,250</td><td class="p-4 text-zinc-300">31,500</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Annual</td><td class="p-4 text-yellow-500 font-medium">47,250</td><td class="p-4 text-zinc-300">55,650</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- NON-RESIDENTS TAB CONTENT (Hidden by default) -->
-                <div id="tab-content-nonResidents" class="space-y-16 hidden fade-in">
-                    <!-- General Membership Table -->
-                    <div>
-                        <div class="flex items-center gap-3 mb-6 border-b border-zinc-800 pb-4">
-                            <i data-lucide="users" class="w-8 h-8 text-yellow-500"></i>
-                            <h2 class="text-2xl font-black uppercase">General Membership</h2>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-zinc-900 text-zinc-300 text-sm uppercase tracking-wider">
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Duration</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Individual (₹)</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Couple (₹)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-zinc-800">
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Monthly</td><td class="p-4 text-zinc-300">2,625</td><td class="p-4 text-zinc-300">4,200</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Quarterly</td><td class="p-4 text-zinc-300">5,250</td><td class="p-4 text-zinc-300">9,450</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Half Yearly</td><td class="p-4 text-zinc-300">7,875</td><td class="p-4 text-zinc-300">14,700</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Annual</td><td class="p-4 text-zinc-300">11,025</td><td class="p-4 text-zinc-300">18,900</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Personal Training Table -->
-                    <div>
-                        <div class="flex items-center gap-3 mb-6 border-b border-zinc-800 pb-4">
-                            <i data-lucide="target" class="w-8 h-8 text-yellow-500"></i>
-                            <h2 class="text-2xl font-black uppercase">Personal Training (Individual)</h2>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-zinc-900 text-zinc-300 text-sm uppercase tracking-wider">
-                                        <th class="p-4 border-b border-zinc-800 font-bold">Duration</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold text-yellow-500">PT Only (₹)</th>
-                                        <th class="p-4 border-b border-zinc-800 font-bold">PT + Gym Membership (₹)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-zinc-800">
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Monthly</td><td class="p-4 text-yellow-500 font-medium">7,875</td><td class="p-4 text-zinc-300">10,500</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Quarterly</td><td class="p-4 text-yellow-500 font-medium">21,000</td><td class="p-4 text-zinc-300">26,250</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Half Yearly</td><td class="p-4 text-yellow-500 font-medium">36,750</td><td class="p-4 text-zinc-300">44,625</td>
-                                    </tr>
-                                    <tr class="hover:bg-zinc-900/50 transition-colors">
-                                        <td class="p-4 font-semibold text-white">Annual</td><td class="p-4 text-yellow-500 font-medium">63,000</td><td class="p-4 text-zinc-300">74,025</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-12 p-6 bg-zinc-900/50 border border-zinc-800 rounded-sm text-sm text-zinc-400 flex items-start gap-4">
-                    <i data-lucide="activity" class="w-6 h-6 text-yellow-500 shrink-0"></i>
-                    <p>
-                        All fees listed above are <strong class="text-white">inclusive of GST</strong>. Personal training includes 5 days of intensive coaching per week. Admission to the facility requires proof of payment. For corporate/society specific tariff negotiations, please refer to the society's facility office.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PROJECTS PAGE ================= -->
-        <section id="page-projects" class="page-section hidden pb-20">
-            <!-- Header -->
-            <div class="bg-zinc-900 py-16 border-b border-zinc-800 text-center relative overflow-hidden">
-                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 blur-xl pointer-events-none">
-                    <i data-lucide="map-pin" class="w-[400px] h-[400px] text-yellow-500"></i>
-                </div>
-                <div class="relative z-10">
-                    <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">Our <span class="text-yellow-500">Footprint</span></h1>
-                    <p class="text-zinc-400 max-w-2xl mx-auto px-4">Expanding excellence across premium societies and locations.</p>
-                </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 py-16">
-                <!-- Current Projects -->
-                <div class="mb-20">
-                    <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4">Operational Centres</h2>
-                    <p class="text-zinc-400 mb-8 pl-5">Currently delivering fitness excellence to elite communities.</p>
-                    
-                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <!-- Project 1 -->
-                        <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-sm hover:border-yellow-500/50 transition-colors group">
-                            <i data-lucide="map-pin" class="w-8 h-8 text-yellow-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                            <h3 class="text-xl font-bold uppercase mb-1">My Home Avatar</h3>
-                            <p class="text-zinc-400 text-sm mb-4">Narsingi</p>
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-wider">
-                                <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div> Operational
-                            </div>
-                        </div>
-                        <!-- Project 2 -->
-                        <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-sm hover:border-yellow-500/50 transition-colors group">
-                            <i data-lucide="map-pin" class="w-8 h-8 text-yellow-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                            <h3 class="text-xl font-bold uppercase mb-1">My Home Ankura</h3>
-                            <p class="text-zinc-400 text-sm mb-4">Tellapur</p>
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-wider">
-                                <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div> Operational
-                            </div>
-                        </div>
-                        <!-- Project 3 -->
-                        <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-sm hover:border-yellow-500/50 transition-colors group">
-                            <i data-lucide="map-pin" class="w-8 h-8 text-yellow-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                            <h3 class="text-xl font-bold uppercase mb-1">My Home Tarkshya</h3>
-                            <p class="text-zinc-400 text-sm mb-4">Kokapet</p>
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-wider">
-                                <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div> Operational
-                            </div>
-                        </div>
-                        <!-- Project 4 -->
-                        <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-sm hover:border-yellow-500/50 transition-colors group">
-                            <i data-lucide="map-pin" class="w-8 h-8 text-yellow-500 mb-4 group-hover:scale-110 transition-transform"></i>
-                            <h3 class="text-xl font-bold uppercase mb-1">CFS Nallagandla</h3>
-                            <p class="text-zinc-400 text-sm mb-4">Nallagandla</p>
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-wider">
-                                <i data-lucide="star" class="w-3 h-3 fill-yellow-500"></i> HQ / Main Branch
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Future Projects -->
-                <div>
-                    <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4 text-zinc-500">Coming Soon</h2>
-                    <p class="text-zinc-500 mb-8 pl-5">Aspirations and future scale of operations.</p>
-                    
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <!-- Future 1 -->
-                        <div class="bg-zinc-950 border border-dashed border-zinc-800 p-6 rounded-sm opacity-70 hover:opacity-100 transition-opacity">
-                            <div class="w-10 h-10 border-2 border-zinc-700 rounded-sm flex items-center justify-center mb-4">
-                                <i data-lucide="activity" class="w-5 h-5 text-zinc-500"></i>
-                            </div>
-                            <h3 class="text-xl font-bold uppercase text-zinc-300 mb-1">Rollur Branch</h3>
-                            <p class="text-zinc-500 text-sm font-semibold uppercase tracking-wider">Scale of Operations</p>
-                        </div>
-                        <!-- Future 2 -->
-                        <div class="bg-zinc-950 border border-dashed border-zinc-800 p-6 rounded-sm opacity-70 hover:opacity-100 transition-opacity">
-                            <div class="w-10 h-10 border-2 border-zinc-700 rounded-sm flex items-center justify-center mb-4">
-                                <i data-lucide="activity" class="w-5 h-5 text-zinc-500"></i>
-                            </div>
-                            <h3 class="text-xl font-bold uppercase text-zinc-300 mb-1">Jira Branch</h3>
-                            <p class="text-zinc-500 text-sm font-semibold uppercase tracking-wider">Scale of Operations</p>
-                        </div>
-                        <!-- Future 3 -->
-                        <div class="bg-zinc-950 border border-dashed border-zinc-800 p-6 rounded-sm opacity-70 hover:opacity-100 transition-opacity">
-                            <div class="w-10 h-10 border-2 border-zinc-700 rounded-sm flex items-center justify-center mb-4">
-                                <i data-lucide="activity" class="w-5 h-5 text-zinc-500"></i>
-                            </div>
-                            <h3 class="text-xl font-bold uppercase text-zinc-300 mb-1">Aspiration</h3>
-                            <p class="text-zinc-500 text-sm font-semibold uppercase tracking-wider">Scale of Operations</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+    <main class="flex-grow" id="app-container">
+        <!-- Views injected by JS -->
     </main>
+
+    <!-- Floating Action Buttons (WhatsApp & Call) -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
+        <!-- Replace YOUR_WHATSAPP_NUMBER with actual number (e.g., 919876543210) -->
+        <a href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" rel="noopener noreferrer" class="bg-green-500 text-white p-3.5 rounded-full shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:bg-green-600 transition-all hover:scale-110 flex items-center justify-center group relative">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+            <span class="absolute right-full mr-4 bg-zinc-900 text-white text-xs px-2 py-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-zinc-800">
+                Chat on WhatsApp
+            </span>
+        </a>
+        <!-- Replace YOUR_PHONE_NUMBER with actual number (e.g., +919876543210) -->
+        <a href="tel:YOUR_PHONE_NUMBER" class="bg-yellow-500 text-zinc-900 p-3.5 rounded-full shadow-[0_0_15px_rgba(234,179,8,0.4)] hover:bg-yellow-400 transition-all hover:scale-110 flex items-center justify-center group relative">
+            <i data-lucide="phone" class="w-6 h-6 fill-zinc-900"></i>
+            <span class="absolute right-full mr-4 bg-zinc-900 text-white text-xs px-2 py-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-zinc-800">
+                Call Us
+            </span>
+        </a>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-zinc-900 border-t border-zinc-800 py-12 mt-auto">
@@ -574,11 +113,47 @@
                 </div>
                 <div>
                     <h3 class="text-white font-bold uppercase tracking-wider mb-4 text-sm">Locations</h3>
-                    <ul class="space-y-2 text-zinc-400 text-sm">
-                        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-yellow-500"></i> Nallagandla (HQ)</li>
-                        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-yellow-500"></i> Tellapur</li>
-                        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-yellow-500"></i> Kokapet</li>
-                        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-yellow-500"></i> Narsingi</li>
+                    <ul class="space-y-4 text-zinc-400 text-sm">
+                        <!-- Location 1 -->
+                        <li class="flex flex-col gap-1.5">
+                            <div class="flex items-center gap-2 text-white font-semibold">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-yellow-500 shrink-0"></i> Nallagandla (HQ)
+                            </div>
+                            <div class="flex gap-2 pl-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=Core+Fitness+Studio+Nallagandla" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Google Maps</a>
+                                <a href="http://maps.apple.com/?q=Core+Fitness+Studio+Nallagandla" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Apple Maps</a>
+                            </div>
+                        </li>
+                        <!-- Location 2 -->
+                        <li class="flex flex-col gap-1.5">
+                            <div class="flex items-center gap-2 text-white font-semibold">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-yellow-500 shrink-0"></i> Tellapur
+                            </div>
+                            <div class="flex gap-2 pl-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=My+Home+Ankura+Tellapur" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Google Maps</a>
+                                <a href="http://maps.apple.com/?q=My+Home+Ankura+Tellapur" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Apple Maps</a>
+                            </div>
+                        </li>
+                        <!-- Location 3 -->
+                        <li class="flex flex-col gap-1.5">
+                            <div class="flex items-center gap-2 text-white font-semibold">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-yellow-500 shrink-0"></i> Kokapet
+                            </div>
+                            <div class="flex gap-2 pl-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=My+Home+Tarkshya+Kokapet" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Google Maps</a>
+                                <a href="http://maps.apple.com/?q=My+Home+Tarkshya+Kokapet" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Apple Maps</a>
+                            </div>
+                        </li>
+                        <!-- Location 4 -->
+                        <li class="flex flex-col gap-1.5">
+                            <div class="flex items-center gap-2 text-white font-semibold">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-yellow-500 shrink-0"></i> Narsingi
+                            </div>
+                            <div class="flex gap-2 pl-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=My+Home+Avatar+Narsingi" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Google Maps</a>
+                                <a href="http://maps.apple.com/?q=My+Home+Avatar+Narsingi" target="_blank" class="text-xs bg-zinc-800 px-2 py-1 rounded hover:bg-yellow-500 hover:text-zinc-950 transition-colors inline-flex items-center gap-1">Apple Maps</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div>
@@ -587,7 +162,7 @@
                         <li>Trademark & GST Registered</li>
                         <li>Operated by Certified Professionals</li>
                         <li class="mt-4 pt-4 border-t border-zinc-800 text-xs">
-                            © <span id="year"></span> Core Fitness Studio.<br>All rights reserved.
+                            © <span id="current-year"></span> Core Fitness Studio.<br/>All rights reserved.
                         </li>
                     </ul>
                 </div>
@@ -595,102 +170,486 @@
         </div>
     </footer>
 
-    <!-- Interactive Logic -->
+    <!-- Application Logic -->
     <script>
-        // Initialize Icons
-        lucide.createIcons();
-
-        // Set dynamic year
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // --- Navigation Logic ---
-        const pages = ['home', 'about', 'packages', 'projects'];
+        // --- State ---
+        let currentPage = 'home';
         let isMobileMenuOpen = false;
 
-        function navigateTo(targetPage) {
-            // Hide all pages, show target page
-            pages.forEach(page => {
-                const section = document.getElementById(`page-${page}`);
-                if (page === targetPage) {
-                    section.classList.remove('hidden');
-                } else {
-                    section.classList.add('hidden');
-                }
-            });
+        // Navigation (Packages removed)
+        const navPages = ['home', 'about', 'projects'];
 
-            // Update Desktop Nav Active States
-            pages.forEach(page => {
-                const navLink = document.getElementById(`nav-${page}`);
-                if(navLink) {
-                    if (page === targetPage) {
-                        navLink.classList.remove('text-zinc-400');
-                        navLink.classList.add('text-yellow-500');
-                    } else {
-                        navLink.classList.remove('text-yellow-500');
-                        navLink.classList.add('text-zinc-400');
-                    }
-                }
-            });
-
-            // Update Mobile Menu Styles (Active Text Color)
-            const mobileButtons = document.querySelectorAll('#mobile-menu button');
-            mobileButtons.forEach(btn => {
-                if(btn.textContent.trim().toLowerCase() === targetPage) {
-                    btn.classList.replace('text-zinc-400', 'text-white');
-                } else {
-                    btn.classList.replace('text-white', 'text-zinc-400');
-                }
-            });
-
-            // Scroll to top and close mobile menu
-            window.scrollTo(0, 0);
-            if (isMobileMenuOpen) {
-                toggleMobileMenu();
-            }
+        // --- Core Functions ---
+        function initApp() {
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+            renderNavigation();
+            renderPage();
         }
 
-        // --- Mobile Menu Toggle ---
+        function navigateTo(page) {
+            currentPage = page;
+            isMobileMenuOpen = false;
+            
+            renderNavigation();
+            renderPage();
+            lucide.createIcons();
+            window.scrollTo(0, 0); // Scroll to top on page change
+        }
+
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            
             isMobileMenuOpen = !isMobileMenuOpen;
+            renderNavigation();
+            lucide.createIcons();
+        }
+
+        // --- Rendering Functions ---
+        function renderNavigation() {
+            // Desktop Nav
+            const desktopMenu = document.getElementById('desktop-menu');
+            let desktopHtml = navPages.map(page => `
+                <button
+                    onclick="navigateTo('${page}')"
+                    class="text-sm font-semibold tracking-wide uppercase transition-colors ${
+                        currentPage === page ? 'text-yellow-500' : 'text-zinc-400 hover:text-white'
+                    }"
+                >
+                    ${page}
+                </button>
+            `).join('');
             
+            desktopHtml += `
+                <button onclick="navigateTo('projects')" class="bg-yellow-500 text-zinc-950 px-5 py-2 text-sm font-bold uppercase tracking-wide hover:bg-yellow-400 transition-colors rounded-sm">
+                    Find Us
+                </button>
+            `;
+            desktopMenu.innerHTML = desktopHtml;
+
+            // Mobile Nav
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuLinks = document.getElementById('mobile-menu-links');
+            const menuIconBtn = document.getElementById('mobile-menu-btn');
+
             if (isMobileMenuOpen) {
-                menu.classList.remove('hidden');
-                // Change icon to X (we redraw via Lucide)
-                icon.setAttribute('data-lucide', 'x');
+                mobileMenu.classList.remove('hidden');
+                menuIconBtn.innerHTML = `<i data-lucide="x" class="w-6 h-6"></i>`;
+                
+                mobileMenuLinks.innerHTML = navPages.map(page => `
+                    <button
+                        onclick="navigateTo('${page}')"
+                        class="block w-full text-left px-3 py-4 text-base font-bold tracking-wider uppercase border-b border-zinc-800/50 ${
+                            currentPage === page ? 'text-yellow-500' : 'text-zinc-300'
+                        }"
+                    >
+                        ${page}
+                    </button>
+                `).join('');
             } else {
-                menu.classList.add('hidden');
-                // Change icon back to Menu
-                icon.setAttribute('data-lucide', 'menu');
-            }
-            lucide.createIcons(); // re-render the icon
-        }
-
-        // --- Package Tabs Logic ---
-        function switchPackageTab(tab) {
-            const resBtn = document.getElementById('tab-btn-residents');
-            const nonResBtn = document.getElementById('tab-btn-nonResidents');
-            const resContent = document.getElementById('tab-content-residents');
-            const nonResContent = document.getElementById('tab-content-nonResidents');
-
-            if (tab === 'residents') {
-                // Style Active Button
-                resBtn.className = 'px-8 py-3 text-sm font-bold uppercase tracking-wider rounded-sm transition-all bg-yellow-500 text-zinc-950 shadow-lg';
-                nonResBtn.className = 'px-8 py-3 text-sm font-bold uppercase tracking-wider rounded-sm transition-all text-zinc-400 hover:text-white';
-                // Show Content
-                resContent.classList.remove('hidden');
-                nonResContent.classList.add('hidden');
-            } else {
-                // Style Active Button
-                nonResBtn.className = 'px-8 py-3 text-sm font-bold uppercase tracking-wider rounded-sm transition-all bg-yellow-500 text-zinc-950 shadow-lg';
-                resBtn.className = 'px-8 py-3 text-sm font-bold uppercase tracking-wider rounded-sm transition-all text-zinc-400 hover:text-white';
-                // Show Content
-                nonResContent.classList.remove('hidden');
-                resContent.classList.add('hidden');
+                mobileMenu.classList.add('hidden');
+                menuIconBtn.innerHTML = `<i data-lucide="menu" class="w-6 h-6"></i>`;
             }
         }
+
+        function renderPage() {
+            const container = document.getElementById('app-container');
+            
+            switch(currentPage) {
+                case 'home': container.innerHTML = getHomeHtml(); break;
+                case 'about': container.innerHTML = getAboutHtml(); break;
+                case 'projects': container.innerHTML = getProjectsHtml(); break;
+            }
+        }
+
+        // --- View Generators ---
+
+        function getHomeHtml() {
+            return `
+            <div class="fade-in duration-500">
+                <!-- Hero Section Placeholder -->
+                <div class="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+                    <div class="absolute inset-0 z-0">
+                        <img 
+                            src="https://placehold.co/1920x1080/18181b/eab308?text=Hero+Background+Image+(1920x1080)" 
+                            alt="Hero Background Placeholder" 
+                            class="w-full h-full object-cover opacity-30"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
+                    </div>
+                    
+                    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-yellow-500/30 text-yellow-500 text-xs font-bold uppercase tracking-widest mb-6">
+                            <i data-lucide="activity" class="w-3 h-3"></i> Elevating Fitness Excellence
+                        </div>
+                        <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tight mb-6">
+                            Unleash Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Core</span> Potential
+                        </h1>
+                        <p class="text-lg md:text-xl text-zinc-300 mb-10 max-w-2xl mx-auto font-light">
+                            Providing state-of-the-art fitness services with a 5+ year legacy. 
+                            Experience upscale wellness tailored for elite communities.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button 
+                                onclick="navigateTo('about')"
+                                class="bg-yellow-500 text-zinc-950 px-8 py-4 font-black uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded-sm flex items-center justify-center gap-2"
+                            >
+                                Our Story <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="bg-yellow-500 text-zinc-950 py-12 border-y-4 border-yellow-600 relative z-20 -mt-10 mx-4 md:mx-auto max-w-6xl rounded-sm shadow-2xl">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 px-8 text-center">
+                        <div>
+                            <div class="text-4xl md:text-5xl font-black mb-1">4800+</div>
+                            <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Success Stories</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl md:text-5xl font-black mb-1 flex items-center justify-center gap-1">
+                                4.6 <i data-lucide="star" class="w-6 h-6 fill-zinc-950"></i>
+                            </div>
+                            <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Google Rating</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl md:text-5xl font-black mb-1">600+</div>
+                            <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Monthly Registrations</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl md:text-5xl font-black mb-1">26</div>
+                            <div class="text-xs md:text-sm font-bold uppercase tracking-wider opacity-80">Elite Trainers</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Home Page 'About' Snippet Placeholder -->
+                <div class="max-w-4xl mx-auto px-4 py-20 text-center relative z-10 bg-zinc-950">
+                    <div class="inline-flex justify-center mb-6">
+                        <!-- About Section Icon Placeholder -->
+                        <img src="https://placehold.co/100x100/18181b/eab308?text=Icon" alt="About Icon Placeholder" class="h-16 w-auto object-contain mix-blend-screen rounded-full border border-zinc-800">
+                    </div>
+                    <p class="text-xl md:text-2xl text-zinc-300 leading-relaxed font-light mb-6">
+                        <strong class="text-white font-semibold">About:</strong> Core Fitness Studio is a Trademark and GST registered gym in Nallagandla and is operational for 5 years now. The owner who himself is a certified nutrition coach has been in this industry for over 20 years and has a deep understanding of the human body.
+                    </p>
+                    <p class="text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
+                        The team at CFS comes with an overall experience of over 30 years with multiple trainers who continue to participate and win competitions at various levels. We are passionate about what we do and that is what makes us stand tall amongst us mortals.
+                    </p>
+                </div>
+
+                <!-- Facility Gallery with Updated World-Class Content -->
+                <div class="max-w-7xl mx-auto px-4 py-16 border-t border-zinc-800">
+                    <div class="text-center mb-16 max-w-4xl mx-auto">
+                        <h2 class="text-3xl font-black uppercase mb-6">World-Class <span class="text-yellow-500">Facilities</span></h2>
+                        <p class="text-zinc-300 text-lg leading-relaxed">
+                            Experience an unparalleled fitness journey in our exclusive, state-of-the-art facilities. 
+                            Designed with precision and equipped with top-tier, bio-mechanically advanced machinery, our floors offer the perfect environment for both high-intensity training and focused recovery. Every zone is meticulously maintained to provide an elite, hygienic, and motivating atmosphere tailored for champions.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Image 1 Placeholder -->
+                        <div class="group relative overflow-hidden rounded-sm border border-zinc-800 bg-zinc-900 aspect-[4/3]">
+                            <img src="https://placehold.co/800x600/18181b/eab308?text=Facility+Image+1%5Cn(800x600+Pixels)" alt="Facility Image 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <!-- Image 2 Placeholder -->
+                        <div class="group relative overflow-hidden rounded-sm border border-zinc-800 bg-zinc-900 aspect-[4/3]">
+                            <img src="https://placehold.co/800x600/18181b/eab308?text=Facility+Image+2%5Cn(800x600+Pixels)" alt="Facility Image 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <!-- Image 3 Placeholder -->
+                        <div class="group relative overflow-hidden rounded-sm border border-zinc-800 bg-zinc-900 aspect-[4/3]">
+                            <img src="https://placehold.co/800x600/18181b/eab308?text=Facility+Image+3%5Cn(800x600+Pixels)" alt="Facility Image 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <!-- Image 4 Placeholder -->
+                        <div class="group relative overflow-hidden rounded-sm border border-zinc-800 bg-zinc-900 aspect-[4/3]">
+                            <img src="https://placehold.co/800x600/18181b/eab308?text=Facility+Image+4%5Cn(800x600+Pixels)" alt="Facility Image 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <!-- Image 5 Placeholder -->
+                        <div class="group relative overflow-hidden rounded-sm border border-zinc-800 bg-zinc-900 aspect-[4/3]">
+                            <img src="https://placehold.co/800x600/18181b/eab308?text=Facility+Image+5%5Cn(800x600+Pixels)" alt="Facility Image 5" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <!-- Image 6 Placeholder -->
+                        <div class="group relative overflow-hidden rounded-sm border border-zinc-800 bg-zinc-900 aspect-[4/3]">
+                            <img src="https://placehold.co/800x600/18181b/eab308?text=Facility+Image+6%5Cn(800x600+Pixels)" alt="Facility Image 6" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Highlight -->
+                <div class="max-w-7xl mx-auto px-4 pb-24 border-t border-zinc-800 pt-16">
+                    <div class="grid md:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-black uppercase mb-6 border-l-4 border-yellow-500 pl-4">Exclusive Corporate <br/>& Society Fitness</h2>
+                            <p class="text-zinc-400 mb-6 text-lg leading-relaxed">
+                                We specialize in collaborating with premium builders like <strong class="text-white">PRAERA BUILDCON</strong> and <strong class="text-white">MY HOME</strong> to provide fully managed, state-of-the-art gymnasiums inside residential societies.
+                            </p>
+                            <ul class="space-y-4 mb-8 text-zinc-300">
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-yellow-500 shrink-0"></i>
+                                    <span>100% Asset Maintenance & Management by CFS</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-yellow-500 shrink-0"></i>
+                                    <span>Certified Elite Trainers Available 12 Hours/Day</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-yellow-500 shrink-0"></i>
+                                    <span>Bespoke Graphics & High-Impact Lighting Installation</span>
+                                </li>
+                            </ul>
+                            <button 
+                                onclick="navigateTo('projects')"
+                                class="text-yellow-500 font-bold uppercase tracking-wide hover:text-yellow-400 flex items-center gap-2"
+                            >
+                                See Our Projects <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-yellow-500 rounded-sm transform translate-x-4 translate-y-4 opacity-20"></div>
+                            <!-- Corporate Gym Interior Placeholder -->
+                            <img 
+                                src="https://placehold.co/800x1000/18181b/eab308?text=Corporate+Gym+Interior%5Cn(800x1000+Pixels)" 
+                                alt="Gym Interior Placeholder" 
+                                class="relative z-10 w-full rounded-sm object-cover border border-zinc-800"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function getAboutHtml() {
+            return `
+            <div class="fade-in duration-500 pb-20">
+                <!-- Header Placeholder -->
+                <div class="bg-zinc-900 py-20 border-b border-zinc-800 relative overflow-hidden">
+                    <div class="absolute inset-0 z-0">
+                        <img 
+                            src="https://placehold.co/1920x400/18181b/eab308?text=About+Header+Background+(1920x400)" 
+                            alt="About Header Placeholder" 
+                            class="w-full h-full object-cover opacity-10"
+                        />
+                    </div>
+                    <div class="max-w-7xl mx-auto px-4 relative z-10">
+                        <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">About <span class="text-yellow-500">CFS</span></h1>
+                        <p class="text-xl text-zinc-400 max-w-2xl">A legacy of fitness excellence driven by passion, science, and community well-being.</p>
+                    </div>
+                </div>
+
+                <div class="max-w-7xl mx-auto px-4 py-16">
+                    <div class="grid md:grid-cols-12 gap-12">
+                        
+                        <!-- Main Content -->
+                        <div class="md:col-span-8 space-y-12">
+                            <section>
+                                <h2 class="text-2xl font-black uppercase mb-4 flex items-center gap-3">
+                                    <i data-lucide="target" class="text-yellow-500 w-8 h-8"></i> Our Vision
+                                </h2>
+                                <div class="bg-zinc-900 p-8 rounded-sm border-l-4 border-yellow-500 shadow-xl">
+                                    <p class="text-lg text-zinc-300 leading-relaxed italic">
+                                        "To collaborate with elite communities in providing state-of-the-art fitness services catering to residents. Our center provides an exclusive fitness experience that aligns with the upscale character of the society while delivering strong resident well-being."
+                                    </p>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h2 class="text-2xl font-black uppercase mb-4 flex items-center gap-3">
+                                    <i data-lucide="dumbbell" class="text-yellow-500 w-8 h-8"></i> Who We Are
+                                </h2>
+                                <div class="space-y-4 text-zinc-400 leading-relaxed">
+                                    <p>
+                                        Core Fitness Studio is a Trademark and GST registered gym head-quartered in Nallagandla and has been operational for over 5 years. We don't just provide service and maintenance; we deliver a legacy.
+                                    </p>
+                                    <p>
+                                        The owner, a <strong class="text-white">Certified Nutrition Coach</strong>, has been in the fitness industry for over 20 years and possesses a deep, scientific understanding of the human body and transformational mechanics.
+                                    </p>
+                                    <p>
+                                        Our team at CFS comes with an overall collective experience of over <strong class="text-white">30 years</strong>. Our multiple trainers continue to actively participate and win prestigious competitions at various levels. We are passionate about what we do, and that is what makes us stand tall amongst mortals.
+                                    </p>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Sidebar / Stats -->
+                        <div class="md:col-span-4 space-y-6">
+                            <!-- Sidebar Image Placeholder -->
+                            <div class="w-full h-48 rounded-sm overflow-hidden border border-zinc-800 bg-zinc-900">
+                                <img src="https://placehold.co/600x400/18181b/eab308?text=Sidebar+Image%5Cn(600x400)" alt="Sidebar Image Placeholder" class="w-full h-full object-cover" />
+                            </div>
+
+                            <div class="bg-zinc-900 p-6 border border-zinc-800 rounded-sm">
+                                <h3 class="font-bold uppercase text-yellow-500 mb-4 tracking-widest text-sm">Leadership Expertise</h3>
+                                <ul class="space-y-4">
+                                    <li class="flex gap-3">
+                                        <div class="mt-1"><i data-lucide="users" class="w-5 h-5 text-zinc-400"></i></div>
+                                        <div>
+                                            <strong class="block text-white">20+ Years Industry Experience</strong>
+                                            <span class="text-sm text-zinc-500">Led by a Certified Nutrition Coach</span>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="mt-1"><i data-lucide="trophy" class="w-5 h-5 text-zinc-400"></i></div>
+                                        <div>
+                                            <strong class="block text-white">Competition Winning Staff</strong>
+                                            <span class="text-sm text-zinc-500">Trainers active in professional circuits</span>
+                                        </div>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <div class="mt-1"><i data-lucide="calendar-days" class="w-5 h-5 text-zinc-400"></i></div>
+                                        <div>
+                                            <strong class="block text-white">5+ Years Operational</strong>
+                                            <span class="text-sm text-zinc-500">Established brand in Nallagandla</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-yellow-500 text-zinc-950 p-6 rounded-sm">
+                                <h3 class="font-black uppercase mb-2 text-lg">Why Choose Us?</h3>
+                                <p class="text-sm font-medium mb-4">Numbers that speak for our dedication.</p>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center border-b border-zinc-950/20 pb-2">
+                                        <span class="font-bold">Google Rating</span>
+                                        <span class="font-black text-xl flex items-center">4.6<i data-lucide="star" class="w-4 h-4 ml-1 fill-zinc-950"></i></span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-zinc-950/20 pb-2">
+                                        <span class="font-bold">Active Centres</span>
+                                        <span class="font-black text-xl">4</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-zinc-950/20 pb-2">
+                                        <span class="font-bold">Elite Trainers</span>
+                                        <span class="font-black text-xl">26</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold">PT Days/Week</span>
+                                        <span class="font-black text-xl">5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function getProjectsHtml() {
+            const currentProjects = [
+                { name: "My Home Avatar", status: "Operational", location: "Narsingi" },
+                { name: "My Home Ankura", status: "Operational", location: "Tellapur" },
+                { name: "My Home Tarkshya", status: "Operational", location: "Kokapet" },
+                { name: "CFS Nallagandla", status: "HQ / Main Branch", location: "Nallagandla" },
+            ];
+
+            const futureProjects = [
+                { name: "Rollur Branch", type: "Scale of Operations" },
+                { name: "Jira Branch", type: "Scale of Operations" },
+                { name: "Aspiration", type: "Scale of Operations" },
+            ];
+
+            const currentProjectsHtml = currentProjects.map(proj => {
+                const isHQ = proj.name === "CFS Nallagandla";
+                const badgeClass = isHQ ? "bg-yellow-500/10 text-yellow-500" : "bg-green-500/10 text-green-400";
+                const badgeContent = isHQ 
+                    ? `<i data-lucide="star" class="w-3 h-3 fill-yellow-500"></i> ${proj.status}`
+                    : `<div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div> ${proj.status}`;
+                
+                // Maps URLs formatting for Google and Apple
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(proj.name + ' ' + proj.location)}`;
+                const appleMapsUrl = `http://maps.apple.com/?q=${encodeURIComponent(proj.name + ' ' + proj.location)}`;
+
+                return `
+                <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-sm hover:border-yellow-500/50 transition-colors flex flex-col group relative overflow-hidden">
+                    <!-- Location Background Image Placeholder -->
+                    <div class="absolute inset-0 opacity-10 pointer-events-none z-0">
+                        <img src="https://placehold.co/400x400/18181b/eab308?text=Loc+Img" alt="Location Background" class="w-full h-full object-cover" />
+                    </div>
+
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="mb-4 text-yellow-500 group-hover:scale-110 transition-transform origin-left">
+                            <i data-lucide="map-pin" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold uppercase mb-2">${proj.name}</h3>
+                        <p class="text-zinc-400 text-sm mb-4">${proj.location}</p>
+                        
+                        <!-- Map Links -->
+                        <div class="flex flex-col gap-2 mb-6 mt-auto">
+                            <a href="${googleMapsUrl}" target="_blank" class="inline-flex items-center justify-center gap-2 text-zinc-900 bg-yellow-500 hover:bg-yellow-400 text-xs font-bold py-2 px-3 rounded-sm transition-colors">
+                                <i data-lucide="map" class="w-4 h-4"></i> Google Maps
+                            </a>
+                            <a href="${appleMapsUrl}" target="_blank" class="inline-flex items-center justify-center gap-2 text-zinc-300 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-bold py-2 px-3 rounded-sm transition-colors">
+                                <i data-lucide="navigation" class="w-4 h-4"></i> Apple Maps
+                            </a>
+                        </div>
+                        
+                        <div class="inline-flex items-center self-start gap-1.5 px-2.5 py-1 rounded ${badgeClass} text-xs font-bold uppercase tracking-wider">
+                            ${badgeContent}
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            const futureProjectsHtml = futureProjects.map(proj => `
+                <div class="bg-zinc-950 border border-dashed border-zinc-800 p-6 rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                    <div class="w-10 h-10 border-2 border-zinc-700 rounded-sm flex items-center justify-center mb-4">
+                        <i data-lucide="activity" class="w-5 h-5 text-zinc-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold uppercase text-zinc-300 mb-1">${proj.name}</h3>
+                    <p class="text-zinc-500 text-sm font-semibold uppercase tracking-wider">${proj.type}</p>
+                </div>
+            `).join('');
+
+            return `
+            <div class="fade-in duration-500 pb-20">
+                <!-- Header Placeholder -->
+                <div class="bg-zinc-900 py-16 border-b border-zinc-800 text-center relative overflow-hidden">
+                    <div class="absolute inset-0 z-0">
+                        <img 
+                            src="https://placehold.co/1920x400/18181b/eab308?text=Projects+Header+Background+(1920x400)" 
+                            alt="Projects Header Placeholder" 
+                            class="w-full h-full object-cover opacity-10"
+                        />
+                    </div>
+                    <div class="relative z-10">
+                        <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">Our <span class="text-yellow-500">Footprint</span></h1>
+                        <p class="text-zinc-400 max-w-2xl mx-auto px-4">Expanding excellence across premium societies and locations.</p>
+                    </div>
+                </div>
+
+                <div class="max-w-7xl mx-auto px-4 py-16">
+                    
+                    <!-- Current Projects -->
+                    <div class="mb-20">
+                        <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4">Operational Centres</h2>
+                        <p class="text-zinc-400 mb-8 pl-5">Currently delivering fitness excellence to elite communities.</p>
+                        
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            ${currentProjectsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Future Projects -->
+                    <div>
+                        <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4 text-zinc-500">Coming Soon</h2>
+                        <p class="text-zinc-500 mb-8 pl-5">Aspirations and future scale of operations.</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-6">
+                            ${futureProjectsHtml}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            `;
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+            lucide.createIcons(); // Initial icon rendering
+        });
     </script>
 </body>
 </html>
+
+
