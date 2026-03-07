@@ -789,4 +789,272 @@
         });
     </script>
 </body>
+</html>                     <div class="flex justify-between items-center">
+                                        <span class="font-bold">PT Days/Week</span>
+                                        <span class="font-black text-xl">5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function getProjectsHtml() {
+            const currentProjects = [
+                { name: "My Home Avatar", status: "Operational", location: "Narsingi" },
+                { name: "My Home Ankura", status: "Operational", location: "Tellapur" },
+                { name: "My Home Tarkshya", status: "Operational", location: "Kokapet" },
+                { name: "CFS Nallagandla", status: "HQ / Main Branch", location: "Nallagandla" },
+            ];
+
+            const futureProjects = [
+                { name: "Rollur Branch", type: "Scale of Operations" },
+                { name: "Jira Branch", type: "Scale of Operations" },
+                { name: "Aspiration", type: "Scale of Operations" },
+            ];
+
+            const currentProjectsHtml = currentProjects.map(proj => {
+                const isHQ = proj.name === "CFS Nallagandla";
+                const badgeClass = isHQ ? "bg-yellow-500/10 text-yellow-500" : "bg-green-500/10 text-green-400";
+                const badgeContent = isHQ 
+                    ? `<i data-lucide="star" class="w-3 h-3 fill-yellow-500"></i> ${proj.status}`
+                    : `<div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div> ${proj.status}`;
+                
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(proj.name + ' ' + proj.location)}`;
+                const appleMapsUrl = `http://maps.apple.com/?q=${encodeURIComponent(proj.name + ' ' + proj.location)}`;
+
+                return `
+                <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-sm hover:border-yellow-500/50 transition-colors flex flex-col group relative overflow-hidden">
+                    <!-- Location Background Image -->
+                    <div class="absolute inset-0 opacity-10 pointer-events-none z-0">
+                        <img src="images/location-bg.jpg" alt="Location Background" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/400x400/18181b/eab308?text=Loc+Img';" loading="lazy" />
+                    </div>
+
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="mb-4 text-yellow-500 group-hover:scale-110 transition-transform origin-left">
+                            <i data-lucide="map-pin" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold uppercase mb-2">${proj.name}</h3>
+                        <p class="text-zinc-400 text-sm mb-4">${proj.location}</p>
+                        
+                        <!-- Map Links -->
+                        <div class="flex flex-col gap-2 mb-6 mt-auto">
+                            <a href="${googleMapsUrl}" target="_blank" class="inline-flex items-center justify-center gap-2 text-zinc-900 bg-yellow-500 hover:bg-yellow-400 text-xs font-bold py-2 px-3 rounded-sm transition-colors">
+                                <i data-lucide="map" class="w-4 h-4"></i> Google Maps
+                            </a>
+                            <a href="${appleMapsUrl}" target="_blank" class="inline-flex items-center justify-center gap-2 text-zinc-300 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-bold py-2 px-3 rounded-sm transition-colors">
+                                <i data-lucide="navigation" class="w-4 h-4"></i> Apple Maps
+                            </a>
+                        </div>
+                        
+                        <div class="inline-flex items-center self-start gap-1.5 px-2.5 py-1 rounded ${badgeClass} text-xs font-bold uppercase tracking-wider">
+                            ${badgeContent}
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            const futureProjectsHtml = futureProjects.map(proj => `
+                <div class="bg-zinc-950 border border-dashed border-zinc-800 p-6 rounded-sm opacity-70 hover:opacity-100 transition-opacity">
+                    <div class="w-10 h-10 border-2 border-zinc-700 rounded-sm flex items-center justify-center mb-4">
+                        <i data-lucide="activity" class="w-5 h-5 text-zinc-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold uppercase text-zinc-300 mb-1">${proj.name}</h3>
+                    <p class="text-zinc-500 text-sm font-semibold uppercase tracking-wider">${proj.type}</p>
+                </div>
+            `).join('');
+
+            return `
+            <div class="fade-in duration-500 pb-20">
+                <!-- Header -->
+                <div class="bg-zinc-900 py-16 border-b border-zinc-800 text-center relative overflow-hidden">
+                    <div class="absolute inset-0 z-0">
+                        <img 
+                            src="images/projects-header-bg.jpg" 
+                            alt="Projects Header Background" 
+                            class="w-full h-full object-cover opacity-10"
+                            onerror="this.onerror=null; this.src='https://placehold.co/1920x400/18181b/eab308?text=Projects+Header';"
+                            loading="lazy"
+                        />
+                    </div>
+                    <div class="relative z-10">
+                        <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">Our <span class="text-yellow-500">Footprint</span></h1>
+                        <p class="text-zinc-400 max-w-2xl mx-auto px-4">Expanding excellence across premium societies and locations.</p>
+                    </div>
+                </div>
+
+                <div class="max-w-7xl mx-auto px-4 py-16">
+                    
+                    <!-- Current Projects -->
+                    <div class="mb-20">
+                        <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4">Operational Centres</h2>
+                        <p class="text-zinc-400 mb-8 pl-5">Currently delivering fitness excellence to elite communities.</p>
+                        
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            ${currentProjectsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Future Projects -->
+                    <div>
+                        <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4 text-zinc-500">Coming Soon</h2>
+                        <p class="text-zinc-500 mb-8 pl-5">Aspirations and future scale of operations.</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-6">
+                            ${futureProjectsHtml}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            `;
+        }
+
+        // New Contact Page
+        function getContactHtml() {
+            return `
+            <div class="fade-in duration-500 py-16">
+                <div class="max-w-3xl mx-auto px-4">
+                    <!-- Header -->
+                    <div class="text-center mb-12">
+                        <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">Get in <span class="text-yellow-500">Touch</span></h1>
+                        <p class="text-zinc-400 text-lg">Fill out the form below and we'll get back to you on WhatsApp.</p>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-sm p-8 md:p-10 shadow-2xl">
+                        <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-6">
+                            <!-- Name -->
+                            <div>
+                                <label for="name" class="block text-sm font-bold uppercase tracking-wider text-zinc-300 mb-2">Name <span class="text-yellow-500">*</span></label>
+                                <input type="text" id="name" name="name" required 
+                                    class="w-full bg-zinc-800 border border-zinc-700 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                    placeholder="Your full name">
+                            </div>
+
+                            <!-- Contact Number -->
+                            <div>
+                                <label for="phone" class="block text-sm font-bold uppercase tracking-wider text-zinc-300 mb-2">Contact Number <span class="text-yellow-500">*</span></label>
+                                <input type="tel" id="phone" name="phone" required 
+                                    class="w-full bg-zinc-800 border border-zinc-700 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                    placeholder="Your WhatsApp number">
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-bold uppercase tracking-wider text-zinc-300 mb-2">Email ID <span class="text-yellow-500">*</span></label>
+                                <input type="email" id="email" name="email" required 
+                                    class="w-full bg-zinc-800 border border-zinc-700 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                    placeholder="your.email@example.com">
+                            </div>
+
+                            <!-- Resident Society -->
+                            <div>
+                                <label for="society" class="block text-sm font-bold uppercase tracking-wider text-zinc-300 mb-2">Resident Society <span class="text-yellow-500">*</span></label>
+                                <input type="text" id="society" name="society" required 
+                                    class="w-full bg-zinc-800 border border-zinc-700 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                    placeholder="Name of your apartment/complex">
+                            </div>
+
+                            <!-- Location/Area -->
+                            <div>
+                                <label for="area" class="block text-sm font-bold uppercase tracking-wider text-zinc-300 mb-2">Location/Area <span class="text-yellow-500">*</span></label>
+                                <input type="text" id="area" name="area" required 
+                                    class="w-full bg-zinc-800 border border-zinc-700 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                    placeholder="e.g., Nallagandla, Tellapur, Kokapet...">
+                            </div>
+
+                            <!-- Does your society have a gym? -->
+                            <div>
+                                <label class="block text-sm font-bold uppercase tracking-wider text-zinc-300 mb-3">Does your society have a gym? <span class="text-yellow-500">*</span></label>
+                                <div class="flex gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="hasGym" value="Yes" required class="text-yellow-500 focus:ring-yellow-500 bg-zinc-800 border-zinc-700">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="hasGym" value="No" required class="text-yellow-500 focus:ring-yellow-500 bg-zinc-800 border-zinc-700">
+                                        <span>No</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Is the gym currently managed by someone? -->
+                            <div>
+                                <label class="block text-sm font-bold uppercase tracking-wider text-zinc-300 mb-3">Is the gym currently managed by someone? <span class="text-yellow-500">*</span></label>
+                                <div class="flex gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="managed" value="Yes" required class="text-yellow-500 focus:ring-yellow-500 bg-zinc-800 border-zinc-700">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="managed" value="No" required class="text-yellow-500 focus:ring-yellow-500 bg-zinc-800 border-zinc-700">
+                                        <span>No</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="pt-4">
+                                <button type="submit" 
+                                    class="w-full bg-yellow-500 text-zinc-950 font-black uppercase tracking-widest py-4 px-6 rounded-sm hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2">
+                                    <i data-lucide="send" class="w-5 h-5"></i> Send via WhatsApp
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        // Form submission handler for Contact page
+        window.submitContactForm = function(event) {
+            event.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const society = document.getElementById('society').value.trim();
+            const area = document.getElementById('area').value.trim();
+            const hasGym = document.querySelector('input[name="hasGym"]:checked')?.value;
+            const managed = document.querySelector('input[name="managed"]:checked')?.value;
+
+            // Basic validation (already covered by required)
+            if (!name || !phone || !email || !society || !area || !hasGym || !managed) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Construct WhatsApp message
+            const message = `*New Enquiry from Core Fitness Studio Website*%0A%0A` +
+                `*Name:* ${name}%0A` +
+                `*Phone:* ${phone}%0A` +
+                `*Email:* ${email}%0A` +
+                `*Society:* ${society}%0A` +
+                `*Area/Location:* ${area}%0A` +
+                `*Society has gym?* ${hasGym}%0A` +
+                `*Currently managed?* ${managed}`;
+
+            // Replace YOUR_WHATSAPP_NUMBER with your actual number (without +)
+            const whatsappNumber = 'YOUR_WHATSAPP_NUMBER'; // e.g., 919876543210
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+            lucide.createIcons();
+        });
+    </script>
+</body>
 </html>
