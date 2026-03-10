@@ -543,12 +543,6 @@
                 { name: "Core Fitness Studio Nallagandla", status: "HQ / Main Branch", location: "Nallagandla" },
             ];
 
-            const futureProjects = [
-                { name: "Rollur Branch", type: "Scale of Operations" },
-                { name: "Jira Branch", type: "Scale of Operations" },
-                { name: "Aspiration", type: "Scale of Operations" },
-            ];
-
             const currentProjectsHtml = currentProjects.map(proj => {
                 const isHQ = proj.name === "CFS Nallagandla";
                 const badgeClass = isHQ ? "bg-yellow-500/10 text-yellow-500" : "bg-green-500/10 text-green-400";
@@ -591,16 +585,6 @@
                 `;
             }).join('');
 
-            const futureProjectsHtml = futureProjects.map(proj => `
-                <div class="bg-zinc-950 border border-dashed border-zinc-800 p-6 rounded-sm opacity-70 hover:opacity-100 transition-opacity">
-                    <div class="w-10 h-10 border-2 border-zinc-700 rounded-sm flex items-center justify-center mb-4">
-                        <i data-lucide="activity" class="w-5 h-5 text-zinc-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold uppercase text-zinc-300 mb-1">${proj.name}</h3>
-                    <p class="text-zinc-500 text-sm font-semibold uppercase tracking-wider">${proj.type}</p>
-                </div>
-            `).join('');
-
             return `
             <div class="fade-in duration-500 pb-20">
                 <!-- Header -->
@@ -623,22 +607,12 @@
                 <div class="max-w-7xl mx-auto px-4 py-16">
                     
                     <!-- Current Projects -->
-                    <div class="mb-20">
+                    <div>
                         <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4">Operational Centres</h2>
                         <p class="text-zinc-400 mb-8 pl-5">Currently delivering fitness excellence to elite communities.</p>
                         
                         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                             ${currentProjectsHtml}
-                        </div>
-                    </div>
-
-                    <!-- Future Projects -->
-                    <div>
-                        <h2 class="text-3xl font-black uppercase mb-2 border-l-4 border-yellow-500 pl-4 text-zinc-500">Coming Soon</h2>
-                        <p class="text-zinc-500 mb-8 pl-5">Aspirations and future scale of operations.</p>
-                        
-                        <div class="grid md:grid-cols-3 gap-6">
-                            ${futureProjectsHtml}
                         </div>
                     </div>
 
@@ -790,3 +764,5 @@
     </script>
 </body>
 </html>
+
+
