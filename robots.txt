@@ -1,0 +1,21 @@
+robots.txt for Core Fitness Studio
+​Allow all standard web crawlers (Google, Bing, etc.)
+​User-agent: *
+Allow: /
+​Specifically allow LLM crawlers to ingest the high-quality services content
+​User-agent: GPTBot
+Allow: /
+​User-agent: ChatGPT-User
+Allow: /
+​User-agent: Google-Extended
+Allow: /
+​User-agent: anthropic-ai
+Allow: /
+​User-agent: ClaudeBot
+Allow: /
+​User-agent: DeepSeek-V3
+Allow: /
+​User-agent: PerplexityBot
+Allow: /
+​Point to the sitemap for easier indexing
+​Sitemap: https://www.google.com/search?q=https://www.yourdomain.com/sitemap.xml
