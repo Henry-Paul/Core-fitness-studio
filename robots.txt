@@ -18,4 +18,4 @@ Allow: /
 ​User-agent: PerplexityBot
 Allow: /
 ​Point to the sitemap for easier indexing
-​Sitemap: https://www.google.com/search?q=https://www.yourdomain.com/sitemap.xml
+​Sitemap: https://www.google.com/search?q=https://www.corefitnessstudios.in//sitemap.xml
